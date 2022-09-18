@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Infinite Scroll</title>
+	<style type="text/css">
+		html {scroll-behavior: smooth;}
+		.d-none {display: none !important;}
+		.d-flex {display: flex;}
+		.justify-center {justify-content: center;}
+		.userData {
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			margin: 20px;
+		}
+		.info {
+			height: 200px; width: 200px;
+			background-color: #317773;
+			padding: 10px;
+			margin: 10px;
+			border-radius: 15px;
+			position: relative;
+		}
+
+		.info span {color: #E2D1F9;}
+		.topBtn {
+			padding: 5px;
+			position: fixed;
+			right: 20px;
+			bottom: 25px;
+			background-color: greenyellow;
+			border-radius: 50%;
+			border: 1px dashed black;
+			cursor: pointer;
+		}
+		.pageline {
+			width: 0%;
+			height: 5px;
+			background-color: indianred;
+			position: fixed;
+			margin-top: -20px;
+			left: 0;
+    		right: 0;
+    		z-index: 1;
+		}
+		.userId {
+			position: absolute;
+		    height: 20px;
+		    width: 20px;
+		    right: 14px;
+		    background-color: yellowgreen;
+		    color: red !important;
+		    padding: 10px;
+		    border: 2px solid aliceblue;
+		    border-radius: 50%;
+		    text-align: center;
+		}
+	</style>
+	<!-- <script src="https://code.jquery.com/jquery-1.6.4.js"></script> -->
+	<script type="text/javascript" src="{% static 'mail/jquery-1.6.4.min.js' %}"></script>
+</head>
+<body>
+	<div id="pageseek" class="pageline"></div>
+	<div style="background-color: yellowgreen; height: min-content; width: fit-content; position: fixed; z-index: 1;">
+		<ul style="list-style: none; margin-left: -35px;">
+			<li id="window-scrolltop"></li>
+			<li id="window-height"></li>
+			<li id="document-height"></li>
+		</ul>
+	</div>
+	<div class="userData">
+		{% for user in users %}
+		<div class="info">
+			<span class="userId">{{user.id}}</span>
+			<span>Name: {{user.Name|slice:":6"}}</span><br>
+			<span>Username: {{user.Username|slice:":6"}}</span><br>
+			<span>Age: {{user.Age}}</span>
+		</div>
+		{% endfor %}
+	</div>	
+	<div id="loader" class="d-flex justify-center">
+		<img width="30px" height="30px" src="{% static 'mail/Full snake.gif' %}">
+	</div>
+	<div onclick="document.documentElement.scrollTop = 0;" title="Go to Top" id="go-to-top" class="topBtn">
+		<img height="20px" width="25px" src="{%  static 'mail/long-arrow-up.png' %}">
+	</div>
+
+	<script>
+		var block_request = false;
+		var page = 3;
+		$(window).scroll(function() {
+			$("#window-scrolltop").html(`Scroll from Top: ` + Math.trunc($(window).scrollTop()));
+			$("#window-height").html(`Window height: ` + $(window).height());
+			$("#document-height").html(`Document height: ` +$(document).height());
+			if ($(document).scrollTop() <= $(window).height()) {
+				var position = $(document).scrollTop();
+			}
+			else {
+				var position = $(document).scrollTop() + $(window).height();
+			}
+			var widthPercent = ((position) / $(document).height())*100;
+			$("#pageseek").css('width', `${Math.trunc(widthPercent)}%`);
+			var margin = $(document).height() - $(window).height() - 200;
+		    if($(window).scrollTop() > margin && block_request == false) {
+		   		block_request = true;
+		   		page += 1;
+		   		$.getJSON(`${window.location.protocol.replace(/:/g,'')}://{{request.get_host}}/infiniteJson/?page=${page}`, function(data){
+		   			if (data.page == 'empty') {
+		   				endData = '<h3>You have scrolled enough our server is tired.</h3>';
+		   				$("#loader").html(endData);
+		   			}
+		   			else {
+		   				dataDiv = document.querySelector('.userData');
+		   				for (const obj of data) {
+		   					let content = document.createElement('div');
+		   					content.className = "info";
+		   					name = obj.fields.Name;
+		   					username = obj.fields.Username;
+		   					data = `<span class="userId">${obj.pk}</span>
+		   							<span>Name: ${name.substring(0,6)}</span><br>
+									<span>Username: ${username.substring(0,6)}</span>
+									<br><span>Age: ${obj.fields.Age}</span>`;
+							content.innerHTML = data;
+							dataDiv.append(content);
+							block_request = false;
+		   				}
+		   			}
+	  			});       
+		   }
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Practice</title>
+	<style type="text/css">
+		.d-none {
+			display: none;
+		}
+	</style>
+	<script src="https://code.jquery.com/jquery-1.6.4.js"></script>
+</head>
+<body>
+	<h3>Email Subscription</h3>
+	<div class="display">
+		<label>Email : </label>
+		<input id="email" type="text" name="Email" placeholder="enter your mail">
+		<button id="loader" class="d-none" style="background-color: transparent;" type="submit"><img width="15px" height="15px" src="https://icons8.com/preloaders/preloaders/833/Full%20snake.gif"></button>
+		<button id="subBtn" class="" onclick='openLink();' type="submit">Subscribe</button>
+	</div>
+	<br><a href="/infinite">Go to infinite scroll section</a>
+	<script>
+		function openLink() {
+			var mail = document.getElementById('email').value;
+			$('#loader').removeClass('d-none');
+			$('#subBtn').addClass('d-none');
+			$.getJSON(`${window.location.protocol.replace(/:/g,'')}://{{request.get_host}}/email/${mail}/`, function(data){
+					if (data.status == 'ok') {
+						$('#loader').addClass('d-none');
+						$('#subBtn').removeClass('d-none');
+						var display = `<img height="15px" width="15px" src="https://c.tenor.com/qM6fp_G04OwAAAAi/tick-tick-verified.gif"> Subscribed`
+				    	$("#subBtn").html(display);
+					}
+					else {
+						var display = `Something went wrong.Please try again later.`
+				    	$(".display").html(display);
+					}
+  			});
+		};
+	</script>
+</body>
+</html>
