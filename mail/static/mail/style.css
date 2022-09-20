@@ -1,0 +1,84 @@
+html {scroll-behavior: smooth;}
+.d-none {display: none !important;}
+.d-flex {display: flex;}
+.justify-center {justify-content: center;}
+.userData {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	margin: 20px;
+}
+.info {
+	height: 200px; width: 200px;
+	background-color: #317773;
+	padding: 10px;
+	margin: 10px;
+	border-radius: 15px;
+	position: relative;
+}
+
+.info span {color: #E2D1F9;}
+.topBtn {
+	padding: 5px;
+	position: fixed;
+	right: 20px;
+	bottom: 25px;
+	background-color: greenyellow;
+	border-radius: 50%;
+	border: 1px dashed black;
+	cursor: pointer;
+}
+
+.topBtn img {
+	transition: 0.5s;
+}
+
+.pageline {
+	width: 0%;
+	height: 5px;
+	background-color: indianred;
+	position: fixed;
+	margin-top: -20px;
+	left: 0;
+	right: 0;
+	z-index: 1;
+}
+.userId {
+	position: absolute;
+    height: 20px;
+    width: 20px;
+    right: 14px;
+    background-color: yellowgreen;
+    color: red !important;
+    padding: 10px;
+    border: 2px solid aliceblue;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.animate {
+	animation-name: fade;
+	animation-duration: 0.5s;
+}
+
+.downBtn {
+	padding: 5px;
+	position: fixed;
+	right: 20px;
+	bottom: 25px;
+	background-color: greenyellow;
+	border-radius: 50%;
+	border: 1px dashed black;
+	cursor: pointer;
+}
+
+.downBtn img {
+	transform: rotate(180deg);
+    transition: 0.5s;
+}
+
+@keyframes fade {
+  0%   {transform: translateY(150px);}
+  100% {transform: translateY(0px);}
+}

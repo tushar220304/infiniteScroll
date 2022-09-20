@@ -5,61 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Infinite Scroll</title>
-	<style type="text/css">
-		html {scroll-behavior: smooth;}
-		.d-none {display: none !important;}
-		.d-flex {display: flex;}
-		.justify-center {justify-content: center;}
-		.userData {
-			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			justify-content: space-around;
-			margin: 20px;
-		}
-		.info {
-			height: 200px; width: 200px;
-			background-color: #317773;
-			padding: 10px;
-			margin: 10px;
-			border-radius: 15px;
-			position: relative;
-		}
-
-		.info span {color: #E2D1F9;}
-		.topBtn {
-			padding: 5px;
-			position: fixed;
-			right: 20px;
-			bottom: 25px;
-			background-color: greenyellow;
-			border-radius: 50%;
-			border: 1px dashed black;
-			cursor: pointer;
-		}
-		.pageline {
-			width: 0%;
-			height: 5px;
-			background-color: indianred;
-			position: fixed;
-			margin-top: -20px;
-			left: 0;
-    		right: 0;
-    		z-index: 1;
-		}
-		.userId {
-			position: absolute;
-		    height: 20px;
-		    width: 20px;
-		    right: 14px;
-		    background-color: yellowgreen;
-		    color: red !important;
-		    padding: 10px;
-		    border: 2px solid aliceblue;
-		    border-radius: 50%;
-		    text-align: center;
-		}
-	</style>
+	<link rel="stylesheet" type="text/css" href="{% static 'mail/style.css' %}">
 	<!-- <script src="https://code.jquery.com/jquery-1.6.4.js"></script> -->
 	<script type="text/javascript" src="{% static 'mail/jquery-1.6.4.min.js' %}"></script>
 </head>
@@ -85,7 +31,7 @@
 	<div id="loader" class="d-flex justify-center">
 		<img width="30px" height="30px" src="{% static 'mail/Full snake.gif' %}">
 	</div>
-	<div onclick="document.documentElement.scrollTop = 0;" title="Go to Top" id="go-to-top" class="topBtn">
+	<div onclick="document.documentElement.scrollTop = $(document).height() - 100;" title="Go to Top" id="go-to-top" class="downBtn">
 		<img height="20px" width="25px" src="{%  static 'mail/long-arrow-up.png' %}">
 	</div>
 
@@ -96,6 +42,20 @@
 			$("#window-scrolltop").html(`Scroll from Top: ` + Math.trunc($(window).scrollTop()));
 			$("#window-height").html(`Window height: ` + $(window).height());
 			$("#document-height").html(`Document height: ` +$(document).height());
+			if ($(window).scrollTop() > 600) {
+				$('#go-to-top').removeClass('downBtn');
+				$('#go-to-top').addClass('topBtn');
+				$('#go-to-top').click(function() {
+					document.documentElement.scrollTop = 0;
+				});
+			}
+			else {
+				$('#go-to-top').removeClass('topBtn');
+				$('#go-to-top').addClass('downBtn');
+				$('#go-to-top').click(function() {
+					document.documentElement.scrollTop = $(document).height() - 100;
+				});
+			}
 			if ($(document).scrollTop() <= $(window).height()) {
 				var position = $(document).scrollTop();
 			}
@@ -117,7 +77,7 @@
 		   				dataDiv = document.querySelector('.userData');
 		   				for (const obj of data) {
 		   					let content = document.createElement('div');
-		   					content.className = "info";
+		   					content.className = "info animate";
 		   					name = obj.fields.Name;
 		   					username = obj.fields.Username;
 		   					data = `<span class="userId">${obj.pk}</span>

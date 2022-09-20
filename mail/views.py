@@ -34,7 +34,7 @@ def infiniteScrollJSon(request):
 	try:
 		user_page = paginator.page(page)
 		users_json = serializers.serialize('json', user_page)
-		time.sleep(0.5)
+		# time.sleep(0.5)
 		return HttpResponse(users_json, content_type="text/json-comment-filtered")
 	except EmptyPage:
 		return JsonResponse({'page': 'empty'})
