@@ -1,7 +1,13 @@
 html {scroll-behavior: smooth;}
+body {margin: 0px; padding: 0px; overflow-x: hidden;}
 .d-none {display: none !important;}
 .d-flex {display: flex;}
 .justify-center {justify-content: center;}
+.p-fixed {
+	position: fixed !important;
+	animation-name: navbar-anime;
+	animation-duration: 0.5s;
+}
 .userData {
 	display: flex;
 	flex-direction: row;
@@ -9,6 +15,41 @@ html {scroll-behavior: smooth;}
 	justify-content: space-around;
 	margin: 20px;
 }
+
+.scrollIndicator {
+	background-color: yellowgreen; 
+	height: min-content; 
+	width: fit-content; 
+	position: fixed; 
+	z-index: 1; 
+	margin-top: 170px;
+	margin-left: -175px;
+	transition: 0.5s;
+	display: flex;
+	flex-direction: row;
+}
+
+.scrollIndicator span {
+	font-weight: bold;
+	writing-mode: vertical-lr;
+	transform: rotate(180deg);
+	text-align: center;
+}
+
+.scrollIndicator:hover {
+	margin-left: 0px;
+}
+
+.navbar {
+	display: flex;
+	justify-content: space-around;
+	background-color: whitesmoke;
+	padding: 15px;
+	width: 100%;
+	z-index: 1;
+	transition: top 0.3s;
+}
+
 .info {
 	height: 200px; width: 200px;
 	background-color: #317773;
@@ -19,6 +60,7 @@ html {scroll-behavior: smooth;}
 }
 
 .info span {color: #E2D1F9;}
+
 .topBtn {
 	padding: 5px;
 	position: fixed;
@@ -37,11 +79,9 @@ html {scroll-behavior: smooth;}
 .pageline {
 	width: 0%;
 	height: 5px;
-	background-color: indianred;
-	position: fixed;
-	margin-top: -20px;
-	left: 0;
-	right: 0;
+	background-color: #FF3E84;
+	position: sticky;
+	top: -1px;
 	z-index: 1;
 }
 .userId {
@@ -80,5 +120,10 @@ html {scroll-behavior: smooth;}
 
 @keyframes fade {
   0%   {transform: translateY(150px);}
+  100% {transform: translateY(0px);}
+}
+
+@keyframes navbar-anime {
+  0%   {transform: translateY(-150px);}
   100% {transform: translateY(0px);}
 }

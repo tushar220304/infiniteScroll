@@ -10,13 +10,19 @@
 	<script type="text/javascript" src="{% static 'mail/jquery-1.6.4.min.js' %}"></script>
 </head>
 <body>
+	<div class="navbar">
+		<a href="">Home</a>
+		<a href="">About Us</a>
+		<a href="">Contact Us</a>
+	</div>
 	<div id="pageseek" class="pageline"></div>
-	<div style="background-color: yellowgreen; height: min-content; width: fit-content; position: fixed; z-index: 1;">
-		<ul style="list-style: none; margin-left: -35px;">
+	<div class="scrollIndicator">
+		<ul style="list-style: none; margin-left: -35px; margin-right: 20px;">
 			<li id="window-scrolltop"></li>
 			<li id="window-height"></li>
 			<li id="document-height"></li>
 		</ul>
+		<span>Hover Me</span>
 	</div>
 	<div class="userData">
 		{% for user in users %}
@@ -38,7 +44,22 @@
 	<script>
 		var block_request = false;
 		var page = 3;
+		var lastScrollTop = 0, delta = 5;
 		$(window).scroll(function() {
+			if ($(window).scrollTop() == 0) {
+				$(".navbar").removeClass('p-fixed');
+			}	
+			var nowScrollTop = $(window).scrollTop();
+			if(Math.abs(lastScrollTop - nowScrollTop) >= delta){
+				if (nowScrollTop > lastScrollTop){
+					$(".navbar").removeClass('p-fixed')
+				} else {
+					if ($(window).scrollTop() > 200) {
+						$(".navbar").addClass('p-fixed');
+					}
+				}
+				lastScrollTop = nowScrollTop;
+			}
 			$("#window-scrolltop").html(`Scroll from Top: ` + Math.trunc($(window).scrollTop()));
 			$("#window-height").html(`Window height: ` + $(window).height());
 			$("#document-height").html(`Document height: ` +$(document).height());
@@ -63,7 +84,7 @@
 				var position = $(document).scrollTop() + $(window).height();
 			}
 			var widthPercent = ((position) / $(document).height())*100;
-			$("#pageseek").css('width', `${Math.trunc(widthPercent)}%`);
+			$("#pageseek").css('width', `${widthPercent}%`);
 			var margin = $(document).height() - $(window).height() - 200;
 		    if($(window).scrollTop() > margin && block_request == false) {
 		   		block_request = true;
