@@ -45,7 +45,8 @@ body {margin: 0px; padding: 0px; overflow-x: hidden;}
 	justify-content: space-around;
 	background-color: whitesmoke;
 	padding: 15px;
-	width: 100%;
+	width: min(100% - 2rem);
+	margin-inline: auto;
 	z-index: 1;
 	transition: top 0.3s;
 }
